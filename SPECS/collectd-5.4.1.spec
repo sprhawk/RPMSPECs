@@ -11,7 +11,7 @@ Packager: Yang Hongbo <hongbo@yang.me>
 Group:	Administration/Tools
 License: GPL v2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires: perl(ExtUtils::MakeMaker)
+# BuildRequires: perl(ExtUtils::MakeMaker)
 
 %description
 collectd gathers statistics about the system it is running on and stores this information. Those statistics can then be used to find current performance bottlenecks (i.e. performance analysis) and predict future system load (i.e. capacity planning). Or if you just want pretty graphs of your private server and are fed up with some homegrown solution you're at the right place, too ;).
@@ -21,7 +21,7 @@ collectd gathers statistics about the system it is running on and stores this in
 %setup
 
 %build
-./configure --prefix=/usr/local --sysconfdir=/etc
+%configure --prefix=/usr --sysconfdir=%{_sysconfdir} --libdir=%{_libdir} --mandir=%{_mandir} --bindir=%{_bindir} --sbindir=%{_sbindir} --datadir=%{_datadir} --includedir=%{_includedir}
 make
 
 %install
@@ -34,6 +34,7 @@ rm -rf %{buildroot}
 
 %post
 /sbin/chkconfig --add collectd
+/sbin/chkconfig --level 3456 collectd
 
 %preun
 if [ "$1" = 0 ] ; then
@@ -42,37 +43,36 @@ if [ "$1" = 0 ] ; then
 fi
 exit 0
 
+%changelog
+
 %files
 %defattr(-,root,root,-)
-/usr/local/lib/libcollectdclient.*
-/usr/local/lib/pkgconfig/libcollectdclient.pc
-/usr/local/lib/collectd/*
-/etc/rc.d/init.d/collectd
+%{_libdir}/libcollectdclient.*
+%{_libdir}/pkgconfig/libcollectdclient.pc
+%{_libdir}/collectd/*
+%{_sysconfdir}/rc.d/init.d/collectd
 
-%config(noreplace) /etc/collectd.conf
+%config(noreplace) %{_sysconfdir}/collectd.conf
 
-/usr/local/include/collectd/*
+%{_includedir}/collectd/*
 
-/usr/local/sbin/collectdmon
-/usr/local/sbin/collectd
-/usr/local/bin/collectdctl
-/usr/local/bin/collectd-nagios
-/usr/local/bin/collectd-tg
-/usr/local/lib64/perl5/auto/Collectd/.packlist
-/usr/local/lib64/perl5/perllocal.pod
+%{_sbindir}/collectdmon
+%{_sbindir}/collectd
+%{_bindir}/collectdctl
+%{_bindir}/collectd-nagios
+%{_bindir}/collectd-tg
+%{_libdir}/perl5/auto/Collectd/.packlist
+%{_libdir}/perl5/perllocal.pod
 
 %doc
-/usr/local/share/perl5/Collectd.pm
-/usr/local/share/perl5/Collectd/*
-/usr/local/share/man/man3/Collectd*
+%{_datadir}/perl5/Collectd.pm
+%{_datadir}/perl5/Collectd/*
+%{_mandir}/man3/Collectd*
+%{_mandir}/man1/collectd*
+%{_mandir}/man5/types.db.5*
 
-/usr/local/share/man/man1/collectd*
-/usr/local/share/man/man5/types.db.5
+%{_mandir}/man5/collectd*
 
-/usr/local/share/man/man5/collectd*
+%{_datadir}/collectd/*
 
-/usr/local/share/collectd/*
-
-
-%changelog
 

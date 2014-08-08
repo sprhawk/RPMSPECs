@@ -11,8 +11,8 @@ Packager: Yang Hongbo <hongbo@yang.me>
 Group:	Applications/System
 License: BSD
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires: libevent-devel >= 2.0, ncurses-devel
-Requires: libevent >= 2.0, ncurses
+BuildRequires: libevent2-devel >= 2.0, ncurses-devel
+Requires: libevent2 >= 2.0, ncurses
 
 %description
 tmux is a "terminal multiplexer", it enables a number of terminals (or windows)
@@ -23,7 +23,7 @@ simple, modern, BSD-licensed alternative to programs such as GNU screen.
 %setup
 
 %build
-%configure --prefix=/usr --sysconfdir=%{_sysconfdir} --libdir=%{_libdir} --mandir=%{_mandir} --bindir=%{_bindir} --sbindir=%{_sbindir} --datadir=%{_datadir} --includedir=%{_includedir}
+%configure --prefix=%{_prefix} --sysconfdir=%{_sysconfdir} --libdir=%{_libdir} --mandir=%{_mandir} --bindir=%{_bindir} --sbindir=%{_sbindir} --datadir=%{_datadir} --includedir=%{_includedir}
 %{__make}
 
 %install

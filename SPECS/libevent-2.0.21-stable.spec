@@ -1,7 +1,7 @@
-Name:	libevent
+Name:	libevent2
 Version: 2.0.21
 Release:	1%{?dist}
-Summary: libevent
+Summary: libevent 
 
 Source: https://github.com/downloads/libevent/libevent/libevent-%{version}-stable.tar.gz
 URL: http://libevent.org/
@@ -25,10 +25,10 @@ Requires: %{name} = %{version}
 The libevent libraries, headers and devel document
 
 %prep
-%setup -n %{name}-%{version}-stable
+%setup -n libevent-%{version}-stable
 
 %build
-%configure --prefix=/usr --sysconfdir=%{_sysconfdir} --libdir=%{_libdir} --mandir=%{_mandir} --bindir=%{_bindir} --sbindir=%{_sbindir} --datadir=%{_datadir} --includedir=%{_includedir}
+%configure --prefix=%{_prefix} --sysconfdir=%{_sysconfdir} --libdir=%{_libdir} --mandir=%{_mandir} --bindir=%{_bindir} --sbindir=%{_sbindir} --datadir=%{_datadir} --includedir=%{_includedir}
 make
 
 %install
@@ -38,7 +38,7 @@ make DESTDIR=%{buildroot} install
 rm -rf %{buildroot}
 
 %post
-/sbin/ldconfig
+/sbin/ldconfig %{_libdir}
 
 %changelog
 
